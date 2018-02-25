@@ -1,12 +1,12 @@
 import React from 'react';
-import classes from './Cockpit.css'
+import classes from './Cockpit.css';
 
 const cockpit = (props) => {
     // dynamic classes
     const assignedClasses = [];
     let btnClass = '';
 
-    if(props.showPersons){
+    if (props.showPersons) {
         btnClass = classes.Red;
     }
 
@@ -18,8 +18,8 @@ const cockpit = (props) => {
     }
 
     return (
-        <div className={classes.cockpit}>
-            <h1>Hi, I am REACT APP! </h1>
+        <div className={classes.Cockpit}>
+            <h1>{props.appTitle}</h1>
             <p className={assignedClasses.join(' ')}>Im Really Working.</p>
             <button
                 className={btnClass}
