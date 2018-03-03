@@ -1,18 +1,49 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classes from './App.css';
 import Persons from '../components/Persons/persons';
 import Cockpit from '../components/Cockpit/Cockpit'
+import Aux from '../hoc/Aux';
+import withClass from '../hoc/witchClass';
 
-class App extends Component {
+class App extends PureComponent {
   // state is only where class extends component
-  state = {
-    persons: [
-      { id: 'ded', name: 'Andy', age: 25 },
-      { id: 'fr', name: 'Manu', age: 28 },
-      { id: 'dded', name: 'Gaby', age: 24 },
-    ],
-    otherState: 'Some other value',
-    showPersons: false
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      persons: [
+        { id: '0', name: 'Andy', age: 25 },
+        { id: '1', name: 'Manu', age: 28 },
+        { id: '2', name: 'Gaby', age: 24 },
+      ],
+      otherState: 'Some other value',
+      showPersons: false,
+      toggleClicked: 0
+    };
+
+  }
+
+  componentWillMount() {
+
+  }
+
+  componentDidMount() {
+
+  }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //commented because PureComponent
+  //   return nextState.persons !== this.state.persons ||
+  //     nextState.showPersons !== this.state.showPersons;
+  // }
+
+  componentWillUpdate(nextProps, nextState) {
+    console.log(nextProps, nextState);
+  }
+
+  componentDidUpdate() {
+    // called last
   }
 
   // arrow function
@@ -24,7 +55,6 @@ class App extends Component {
     const person = {
       ...this.state.persons[personIndex]
     };
-    // const person = Object.assign({}, this.state.persons[personIndex])
 
     person.name = event.target.value;
 
@@ -36,20 +66,23 @@ class App extends Component {
 
   deletePersonHandler = (personIndex) => {
     //const persons = this.state.persons.slice();
-    const persons = [...this.state.persons]; // ES6 equiv to slice
+    const persons = [...this.state.persons]; // Copye state
     persons.splice(personIndex, 1);
-    this.setState({ persons: persons });
+    this.setState({ persons: persons }); // state update
   }
 
   togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
-    this.setState({ showPersons: !doesShow });
-
+    this.setState((prevState, props) => {
+      return {
+        showPersons: !doesShow,
+        toggleClicked: prevState.toggleClicked + 1
+      }
+    });
   }
 
 
   render() {
-
     let persons = null;
 
     if (this.state.showPersons) {
@@ -61,7 +94,9 @@ class App extends Component {
     }
 
     return (
-      <div className={classes.App}>
+      <Aux>
+        <button onClick={() => { this.setState({ showPersons: true }) }}>Show Persons</button>
+
         <Cockpit
           appTitle={this.props.title}
           showPersons={this.state.showPersons}
@@ -69,10 +104,10 @@ class App extends Component {
           clicked={this.togglePersonsHandler}
         />
         {persons}
-      </div>
+      </Aux>
 
     );
   }
 }
 
-export default (App);
+export default withClass(App, classes.App);
