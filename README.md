@@ -1,4 +1,4 @@
-<b>BETA Project with REACT 16 and Next-Gen Javascript</b>
+<b>Project with REACT16 and Next-Gen Javascript</b>
 
 
 
